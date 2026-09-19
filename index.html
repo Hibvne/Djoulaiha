@@ -1,0 +1,935 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> Bo Djoulaiiiii ❤️</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #444;
+        }
+
+        /* =========================
+           CŒURS EN ARRIÈRE-PLAN
+        ========================= */
+
+        .background-heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 20px;
+            opacity: 0.5;
+            animation: floatHeart linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           CONTAINER PRINCIPAL
+        ========================= */
+
+        .card {
+            width: 92%;
+            max-width: 480px;
+            min-height: 580px;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            border-radius: 30px;
+
+            padding: 35px 25px;
+
+            text-align: center;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            z-index: 10;
+
+            overflow: hidden;
+        }
+
+        /* =========================
+           ENVELOPPE
+        ========================= */
+
+        .envelope-container {
+            position: absolute;
+
+            inset: 0;
+
+            background: linear-gradient(
+                135deg,
+                #ff4f81,
+                #ff7aa5
+            );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 50;
+
+            transition: 1s ease;
+        }
+
+        .envelope-container.opened {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope {
+            width: 230px;
+            height: 150px;
+
+            background: #fff;
+
+            position: relative;
+
+            border-radius: 8px;
+
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+
+            cursor: pointer;
+        }
+
+        .envelope::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            border-left: 115px solid transparent;
+            border-right: 115px solid transparent;
+            border-top: 85px solid #ffd6e1;
+
+            transform-origin: top;
+
+            transition: 0.8s;
+        }
+
+        .envelope:hover::before {
+            transform: rotateX(180deg);
+        }
+
+        .envelope-text {
+            position: absolute;
+
+            top: 65px;
+            left: 0;
+            right: 0;
+
+            color: #e63968;
+
+            font-weight: bold;
+
+            font-size: 20px;
+
+            z-index: 2;
+        }
+
+        .click-text {
+            position: absolute;
+
+            bottom: 30px;
+
+            left: 0;
+            right: 0;
+
+            color: white;
+
+            font-size: 14px;
+
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* =========================
+           CONTENU
+        ========================= */
+
+        #mainContent {
+            opacity: 0;
+            transform: translateY(30px);
+
+            transition: 1s ease;
+        }
+
+        #mainContent.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .top-heart {
+            font-size: 60px;
+
+            margin-bottom: 10px;
+
+            animation: heartbeat 1.3s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.1);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+
+            60% {
+                transform: scale(1.12);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .name {
+            font-size: 34px;
+
+            color: #e63968;
+
+            margin-bottom: 10px;
+
+            font-weight: 700;
+        }
+
+        .title {
+            font-size: 23px;
+
+            color: #444;
+
+            margin-bottom: 18px;
+        }
+
+        .message {
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            color: #666;
+
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: 19px;
+
+            font-weight: 600;
+
+            color: #e63968;
+
+            margin-top: 20px;
+
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           MESSAGE APRÈS NON
+        ========================= */
+
+        #reaction {
+            min-height: 45px;
+
+            color: #e63968;
+
+            font-weight: 600;
+
+            font-size: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 15px;
+
+            transition: 0.3s;
+        }
+
+        /* =========================
+           BOUTONS
+        ========================= */
+
+        .buttons {
+            min-height: 130px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 18px;
+
+            position: relative;
+        }
+
+        button {
+            border: none;
+
+            border-radius: 50px;
+
+            padding: 14px 27px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        #yesButton {
+            background: #e63968;
+
+            color: white;
+
+            box-shadow:
+                0 7px 20px rgba(230,57,104,0.35);
+        }
+
+        #yesButton:hover {
+            background: #d62857;
+        }
+
+        #noButton {
+            background: #eeeeee;
+
+            color: #555;
+
+            position: relative;
+        }
+
+        /* =========================
+           PAGE FINALE
+        ========================= */
+
+        #success {
+            display: none;
+
+            animation: successAppear 1s ease;
+        }
+
+        @keyframes successAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .success-heart {
+            font-size: 90px;
+
+            animation: heartbeat 1s infinite;
+
+            margin-bottom: 15px;
+        }
+
+        .success-title {
+            color: #e63968;
+
+            font-size: 32px;
+
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            font-size: 18px;
+
+            line-height: 1.8;
+
+            color: #555;
+        }
+
+        .signature {
+            margin-top: 25px;
+
+            color: #e63968;
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+        /* =========================
+           CŒURS DE LA FIN
+        ========================= */
+
+        .final-heart {
+            position: fixed;
+
+            bottom: -50px;
+
+            font-size: 30px;
+
+            pointer-events: none;
+
+            animation: finalFloat 5s linear forwards;
+
+            z-index: 100;
+        }
+
+        @keyframes finalFloat {
+            from {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            to {
+                transform:
+                    translateY(-110vh)
+                    rotate(360deg);
+
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 500px) {
+
+            .card {
+                min-height: 560px;
+
+                padding: 30px 18px;
+            }
+
+            .name {
+                font-size: 30px;
+            }
+
+            .title {
+                font-size: 21px;
+            }
+
+            .message {
+                font-size: 15px;
+            }
+
+            button {
+                padding: 13px 21px;
+
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- ==================================
+         ENVELOPPE D'OUVERTURE
+    =================================== -->
+
+    <div class="envelope-container" id="envelopeScreen">
+
+        <div
+            class="envelope"
+            onclick="openLetter()"
+        >
+
+            <div class="envelope-text">
+                Bo Djoulaiii ❤️
+            </div>
+
+        </div>
+
+        <div class="click-text">
+            Clique sur là stpl 🥺❤️
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         CARTE PRINCIPALE
+    =================================== -->
+
+    <div class="card">
+
+        <!-- QUESTION -->
+
+        <div id="mainContent">
+
+            <div class="top-heart">
+                ❤️
+            </div>
+
+            <div class="name">
+                Alors le sang 
+            </div>
+
+            <div class="title">
+                J'ai quelque chose à te demander... 🥺
+            </div>
+
+            <p class="message">
+                Je sais que tu es fâchée contre moi.
+                Et je sais toujours pas ôurquoi. 😭
+                Mais peut importe la raison je veux pas 
+                que tu sois fâchée contre moi. 🥹
+                
+            </p>
+
+            <p class="message">
+              Alors babe je te demande 
+            </p>
+
+            <div class="question">
+                Est-ce que tu peux me pardonner ? 🥺❤️
+            </div>
+
+            <div id="reaction">
+                J'attends ta réponse...
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    id="yesButton"
+                    onclick="sayYes()"
+                >
+                    OUI ❤️
+                </button>
+
+                <button
+                    id="noButton"
+                    onclick="sayNo()"
+                >
+                    NON 😒
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             MESSAGE FINAL
+        =================================== -->
+
+        <div id="success">
+
+            <div class="success-heart">
+                ❤️
+            </div>
+
+            <div class="success-title">
+                OUUUUI 😭❤️
+            </div>
+
+            <p class="success-message">
+
+                Je savais que t'allais pas me laisser 
+                souffrir comme ça 🥹❤️
+
+                <br><br>
+
+                Merci de me pardonner.
+
+                <br>
+
+                Je vais vraiment faire de mon mieux
+                pour ne plus te faire fâcher. 🫶
+
+                <br><br>
+
+                Maintenant...
+
+                <br>
+
+                J'aurais aimé que je te fasse un câlin. 🥺❤️
+
+            </p>
+
+            <div class="signature">
+                Je t'aime ❤️
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* ==================================
+           OUVERTURE DE LA LETTRE
+        =================================== */
+
+        function openLetter() {
+
+            const envelope =
+                document.getElementById("envelopeScreen");
+
+            const content =
+                document.getElementById("mainContent");
+
+            envelope.classList.add("opened");
+
+            setTimeout(() => {
+
+                content.classList.add("show");
+
+            }, 500);
+        }
+
+
+        /* ==================================
+           VARIABLES
+        =================================== */
+
+        let noClicks = 0;
+
+        const yesButton =
+            document.getElementById("yesButton");
+
+        const noButton =
+            document.getElementById("noButton");
+
+        const reaction =
+            document.getElementById("reaction");
+
+
+        /* ==================================
+           MESSAGES APRÈS CHAQUE NON
+        =================================== */
+
+        const messages = [
+
+            "Aller stp bo Djoulaiiiiiiii 🥺❤️",
+
+            "Même pas un petit oui ? 😭",
+
+            "Babe, sois gentille avec moi 🥹",
+
+            "Je suis vraiment désolé... ❤️",
+
+            "Regarde comme le OUI devient grand 😂❤️",
+
+            "Tu veux vraiment me laisser souffrir comme ça ? 😭",
+
+            "Bo Djoulaiiiii... stp 😭❤️",
+
+            "Une petite chance pour moi ? 🥺",
+
+            "Bon... le NON commence à avoir peur 😂",
+
+            "STP BABE 😭❤️",
+
+            "Tu sais très bien que tu vas finir par dire oui 😂❤️"
+        ];
+
+
+        /* ==================================
+           QUAND ELLE CLIQUE SUR NON
+        =================================== */
+
+        function sayNo() {
+
+            noClicks++;
+
+            /*
+                Le bouton OUI grandit.
+            */
+
+            let yesScale =
+                1 + (noClicks * 0.13);
+
+            yesButton.style.transform =
+                `scale(${yesScale})`;
+
+
+            /*
+                Le bouton NON rétrécit.
+            */
+
+            let noScale =
+                Math.max(
+                    0.35,
+                    1 - (noClicks * 0.09)
+                );
+
+            noButton.style.transform =
+                `scale(${noScale})`;
+
+
+            /*
+                Nouveau message.
+            */
+
+            let index =
+                Math.min(
+                    noClicks - 1,
+                    messages.length - 1
+                );
+
+            reaction.innerText =
+                messages[index];
+
+
+            /*
+                Le bouton NON commence
+                à bouger après quelques clics.
+            */
+
+            if (noClicks >= 4) {
+
+                escapeButton();
+
+            }
+
+
+            /*
+                Après plusieurs clics,
+                le texte du bouton change.
+            */
+
+            if (noClicks >= 7) {
+
+                noButton.innerText =
+                    "non 🥺";
+
+            }
+
+            if (noClicks >= 10) {
+
+                noButton.innerText =
+                    "pitié 😭";
+
+            }
+
+        }
+
+
+        /* ==================================
+           LE BOUTON NON S'ÉCHAPPE
+        =================================== */
+
+        function escapeButton() {
+
+            const buttons =
+                document.querySelector(".buttons");
+
+            const maxX = 100;
+
+            const maxY = 35;
+
+            const randomX =
+                (Math.random() * maxX) -
+                (maxX / 2);
+
+            const randomY =
+                (Math.random() * maxY) -
+                (maxY / 2);
+
+
+            noButton.style.left =
+                `${randomX}px`;
+
+            noButton.style.top =
+                `${randomY}px`;
+        }
+
+
+        /* ==================================
+           QUAND ELLE DIT OUI
+        =================================== */
+
+        function sayYes() {
+
+            const main =
+                document.getElementById("mainContent");
+
+            const success =
+                document.getElementById("success");
+
+
+            main.style.display = "none";
+
+            success.style.display = "block";
+
+
+            /*
+                On lance la pluie de cœurs.
+            */
+
+            createFinalHearts();
+
+        }
+
+
+        /* ==================================
+           PLUIE DE CŒURS
+        =================================== */
+
+        function createFinalHearts() {
+
+            for (let i = 0; i < 45; i++) {
+
+                setTimeout(() => {
+
+                    const heart =
+                        document.createElement("div");
+
+                    heart.classList.add(
+                        "final-heart"
+                    );
+
+
+                    const heartTypes = [
+                        "❤️",
+                        "💖",
+                        "💕",
+                        "💗",
+                        "💓"
+                    ];
+
+
+                    heart.innerText =
+                        heartTypes[
+                            Math.floor(
+                                Math.random() *
+                                heartTypes.length
+                            )
+                        ];
+
+
+                    heart.style.left =
+                        Math.random() * 100 + "vw";
+
+
+                    heart.style.animationDuration =
+                        (3 + Math.random() * 3) + "s";
+
+
+                    document.body.appendChild(heart);
+
+
+                    /*
+                        On supprime le cœur
+                        après l'animation.
+                    */
+
+                    setTimeout(() => {
+
+                        heart.remove();
+
+                    }, 6500);
+
+                }, i * 100);
+
+            }
+
+        }
+
+
+        /* ==================================
+           CŒURS DANS LE BACKGROUND
+        =================================== */
+
+        function createBackgroundHearts() {
+
+            for (let i = 0; i < 18; i++) {
+
+                const heart =
+                    document.createElement("div");
+
+                heart.classList.add(
+                    "background-heart"
+                );
+
+                heart.innerText =
+                    Math.random() > 0.5
+                        ? "♡"
+                        : "♥";
+
+
+                heart.style.left =
+                    Math.random() * 100 + "vw";
+
+
+                heart.style.animationDuration =
+                    (5 + Math.random() * 8) + "s";
+
+
+                heart.style.animationDelay =
+                    Math.random() * 5 + "s";
+
+
+                document.body.appendChild(heart);
+
+            }
+
+        }
+
+
+        createBackgroundHearts();
+
+    </script>
+
+</body>
+</html>
+```
